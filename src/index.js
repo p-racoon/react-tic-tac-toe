@@ -2,18 +2,29 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-    render() {
-        return (
-            //   Remember: writing onClick= {alert("click")} would fire an alert everytime the button is re-rendered 
-            <button className="square"
-                onClick={()=>this.props.onClick()}>
-                {/* Here the value is printed  */}
-                {this.props.value}
-            </button>
-        );
-    }
-}
+// class Square extends React.Component {
+//     render() {
+//         return (
+//             //   Remember: writing onClick= {alert("click")} would fire an alert everytime the button is re-rendered 
+//             <button className="square"
+//                 onClick={()=>this.props.onClick()}>
+//                 {/* Here the value is printed  */}
+//                 {this.props.value}
+//             </button>
+//         );
+//     }
+// }
+
+//below is the Equivalent Square component but implemented via Function, and hnce called as Function Component
+// one disadvantage of a functional component is that it does not support use of states
+function Square(props) {
+    return (
+      <button className="square" onClick={props.onClick}>
+          {/* When we modified the Square to be a function component, we also changed onClick={() => this.props.onClick()} to a shorter onClick={props.onClick} (note the lack of parentheses on both sides). In a class, we used an arrow function to access the correct this value, but in a function component we don’t need to worry about this. */}
+        {props.value}
+      </button>
+    );
+  }
 
 class Board extends React.Component {
     constructor(props){
