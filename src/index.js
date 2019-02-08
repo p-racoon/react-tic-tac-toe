@@ -6,7 +6,8 @@ class Square extends React.Component {
     render() {
       return (
         <button className="square">
-          {/* TODO */}
+            {/* Here the value is printed  */}
+          {this.props.value}
         </button>
       );
     }
@@ -14,7 +15,8 @@ class Square extends React.Component {
   
   class Board extends React.Component {
     renderSquare(i) {
-      return <Square />;
+        // Data 'i' is passed as 'value' 
+      return <Square value={i}/>;
     }
   
     render() {
@@ -65,4 +67,4 @@ class Square extends React.Component {
     <Game />,
     document.getElementById('root')
   );
-  
+   
