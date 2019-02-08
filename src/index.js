@@ -28,7 +28,16 @@ class Board extends React.Component {
         return <Square value={this.state.squares[i]} onClick={()=>this.handleClick(i)}/>;
     }
     handleClick(i) {
-        const squares = this.state.squares.slice();
+        const squares = this.state.squares.slice();// creates copy of the squares array
+        // for objects we can use:
+        // var player = {score: 1, name: 'Jeff'};
+        // var newPlayer = Object.assign({}, player, {score: 2});
+        // we do so because in React we keep the Functions as immutable
+        //Immutabiltiy helps in keepin track of the previous versions by keeping the data intact
+        // Detecting changes in immutable objects is considerably easier.
+        // If the immutable object that is being referenced is different than the previous one, then the object has changed. 
+        // The main benefit of immutability is that it helps you build pure components in React. 
+        // Immutable data can easily determine if changes have been made which helps to determine when a component requires re-rendering.
         squares[i] = 'X';
         this.setState({squares: squares});
       }
