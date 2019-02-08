@@ -19,24 +19,25 @@ import './index.css';
 // one disadvantage of a functional component is that it does not support use of states
 function Square(props) {
     return (
-      <button className="square" onClick={props.onClick}>
-          {/* When we modified the Square to be a function component, we also changed onClick={() => this.props.onClick()} to a shorter onClick={props.onClick} (note the lack of parentheses on both sides). In a class, we used an arrow function to access the correct this value, but in a function component we don’t need to worry about this. */}
-        {props.value}
-      </button>
+        <button className="square" onClick={props.onClick}>
+            {/* When we modified the Square to be a function component, we also changed onClick={() => this.props.onClick()} to a shorter onClick={props.onClick} (note the lack of parentheses on both sides). In a class, we used an arrow function to access the correct this value, but in a function component we don’t need to worry about this. */}
+            {props.value}
+        </button>
     );
-  }
+}
 
 class Board extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            squares: Array(9).fill(null)
+        this.state = {
+            squares: Array(9).fill(null),
+            xIsNext: true,
         }
 
     }
     renderSquare(i) {
         // Data 'i' is passed as 'value' 
-        return <Square value={this.state.squares[i]} onClick={()=>this.handleClick(i)}/>;
+        return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
     }
     handleClick(i) {
         const squares = this.state.squares.slice();// creates copy of the squares array
@@ -49,9 +50,13 @@ class Board extends React.Component {
         // If the immutable object that is being referenced is different than the previous one, then the object has changed. 
         // The main benefit of immutability is that it helps you build pure components in React. 
         // Immutable data can easily determine if changes have been made which helps to determine when a component requires re-rendering.
-        squares[i] = 'X';
-        this.setState({squares: squares});
-      }
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            squares: squares,
+            xIsNext: !this.state.xIsNext
+        });
+
+    }
     render() {
         const status = 'Next player: X';
 
