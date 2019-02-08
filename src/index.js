@@ -40,7 +40,6 @@ class Board extends React.Component {
         return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
     }
     handleClick(i) {
-        const squares = this.state.squares.slice();// creates copy of the squares array
         // for objects we can use:
         // var player = {score: 1, name: 'Jeff'};
         // var newPlayer = Object.assign({}, player, {score: 2});
@@ -50,6 +49,11 @@ class Board extends React.Component {
         // If the immutable object that is being referenced is different than the previous one, then the object has changed. 
         // The main benefit of immutability is that it helps you build pure components in React. 
         // Immutable data can easily determine if changes have been made which helps to determine when a component requires re-rendering.
+        const squares = this.state.squares.slice();// creates copy of the squares array
+        
+        if (calculateWinner(squares) || squares[i]) { // return early by ignoring a click if someone has won the game or if a Square is already filled
+            return;
+          } 
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             squares: squares,
@@ -58,8 +62,14 @@ class Board extends React.Component {
 
     }
     render() {
-        const status = 'Next player: X';
-
+        //change nextPlayer display line
+        const winner = calculateWinner(this.state.squares);
+        let status;
+        if (winner) {
+            status = 'Winner: ' + winner;
+        } else {
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        }
         return (
             <div>
                 <div className="status">{status}</div>
@@ -105,3 +115,25 @@ ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
+
+//helper function to calculate Winner
+function calculateWinner(squares) {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            //just comparing if the value matches any of the winning combinations, if it does function returns the winner
+            return squares[a];
+        }
+    }
+    return null;
+}
