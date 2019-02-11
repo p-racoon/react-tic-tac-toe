@@ -17,6 +17,7 @@ import './index.css';
 
 //below is the Equivalent Square component but implemented via Function, and hnce called as Function Component
 // one disadvantage of a functional component is that it does not support use of states
+
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
@@ -26,19 +27,16 @@ function Square(props) {
     );
 }
 
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
             xIsNext: true,
-        }
+        };
+    }
 
-    }
-    renderSquare(i) {
-        // Data 'i' is passed as 'value' 
-        return <Square value={this.state.squares[i]} onClick={() => this.handleClick(i)} />;
-    }
     handleClick(i) {
         // for objects we can use:
         // var player = {score: 1, name: 'Jeff'};
@@ -50,17 +48,26 @@ class Board extends React.Component {
         // The main benefit of immutability is that it helps you build pure components in React. 
         // Immutable data can easily determine if changes have been made which helps to determine when a component requires re-rendering.
         const squares = this.state.squares.slice();// creates copy of the squares array
-        
         if (calculateWinner(squares) || squares[i]) { // return early by ignoring a click if someone has won the game or if a Square is already filled
             return;
-          } 
+        }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             squares: squares,
-            xIsNext: !this.state.xIsNext
+            xIsNext: !this.state.xIsNext,
         });
-
     }
+
+    renderSquare(i) {
+        // Data 'i' is passed as 'value' 
+        return (
+            <Square
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+            />
+        );
+    }
+
     render() {
         //change nextPlayer display line
         const winner = calculateWinner(this.state.squares);
@@ -70,6 +77,7 @@ class Board extends React.Component {
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
+
         return (
             <div>
                 <div className="status">{status}</div>
@@ -92,6 +100,7 @@ class Board extends React.Component {
         );
     }
 }
+
 
 class Game extends React.Component {
     render() {
